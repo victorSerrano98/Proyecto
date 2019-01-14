@@ -1,0 +1,100 @@
+{%extends "master.html"%}
+{% block contenido%} <br>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+</head>
+<style>
+    tr{
+        border: 1px solid;
+        text-align: center;
+        background-color:ghostwhite;
+    }
+    h1{
+        text-align: center;
+    }
+
+
+     *{
+  margin:0;
+  padding:0;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+body{
+  font-family: 'Open Sans', sans-serif;
+  background:#ffffff;
+}
+
+svg{
+  position:fixed;
+  top:10px;
+  left:180px;
+}
+
+
+
+
+input, textarea, select{
+  display:block;
+  height:50px;
+  width:90%;
+  margin:0 auto;
+  border:none;
+}
+
+
+
+button{
+  cursor:pointer;
+  display:inline-block;
+  width:250px;
+  height:60px;
+  margin-top:-10px;
+  border:none;
+  font-family: 'Open Sans', sans-serif;
+  text-transform:uppercase;
+  color:#0b2e13;
+
+}
+
+
+h3{
+  position:absolute;
+  top:-100%;
+  left:20%;
+  text-transform:uppercase;
+  font-weight:bolder;
+  color: rgba(46, 116, 255, 0);
+  -webkit-transition:.3s ease-in-out 1.2s;
+  transition:.3s ease-in-out 1.2s;
+}
+    ul{
+        display: none;
+    }
+</style>
+<body>
+<div class="card-body" style="margin-right: 150px;margin-left: 150px; background-color: #c6c8ca">
+    <form method="post" style="margin-left: 70px; margin-right: 70px">
+        <h1>{{mensaje}}</h1>
+        <p><label>Numero de Cuenta:</label> <input disabled value="{{numero}}"></p>
+    {{f.as_p}}<br>
+     {% csrf_token %}
+    <div style="text-align: center">
+            <button type="submit">Guardar</button>
+        <a href="../" class="btn btn-secondary"  style="background-color: #c82333; width: 250px; height: 63px; font-size: 25px"> Cancelar</a>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
+{%endblock%}}

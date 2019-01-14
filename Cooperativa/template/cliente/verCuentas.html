@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+{%extends "master.html"%}
+{% block contenido%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"
+
+</head>
+<style>
+    tr{
+        border: 1px solid;
+        text-align: center;
+        background-color:ghostwhite;
+    }
+    h1{
+        text-align: center;
+    }
+
+</style>
+<body onload="hola()">
+<div align="center" style="font-size: 30px">
+    <b>Informacion: </b>
+</div>
+<div  style="margin-right: 150px;margin-left: 110px;">
+    <b style="font-size: 20px">Nombres: </b>{{cliente.nombres}}<br>
+    <b  style="font-size: 20px">Apellidos: </b>{{cliente.apellidos}}<br>
+    <b  style="font-size: 20px">Genero: </b>{{cliente.genero}}<br>
+    <b  style="font-size: 20px">Correo: </b>{{cliente.correo}}<br>
+    <b  style="font-size: 20px">Estado Civil: </b>{{cliente.estadoCivil}}<br>
+    <b  style="font-size: 20px">Fecha de Nacimiento: </b>{{cliente.nombres}}<br>
+    <b  style="font-size: 20px">Telefono: </b>{{cliente.telefono}}<br>
+    <b  style="font-size: 20px">Celular: </b>{{cliente.celular}}<br>
+    <b  style="font-size: 20px">Direccion: </b>{{cliente.direccion}}<br>
+    <b  style="font-size: 20px">Estado: </b>
+    {% if cliente.estado %}
+    Activo
+    {%else%}
+    Bloqueado
+    {% endif %}
+    <br>
+
+</div>
+<div align="center" style="font-size: 50px">
+    {{title}}
+    {%if permisoCrear%}
+    {%if cliente.estado%}
+    <a id="hola"  style="background-color: #4e555b; width: 290px; height: 50px; font-size: 25px" class="btn btn-success" href="../cuentas/crearCuentaCliente?cedula={{cedula}}" ><i class="fas fa-plus"></i>  Nueva Cuenta</a>
+    {%endif%}
+    {%endif%}
+
+
+</div>
+
+<br>
+<div align="center" style="margin-right: 150px;margin-left: 110px;">
+     <table class="table table-striped   ">
+  <thead>
+    <tr>
+      <th>Numero</th>
+      <th>Cedula Cliente</th>
+      <th>Saldo</th>
+        <th>Fecha de Apertura</th>
+        {%if permisoEditar%}
+        <th>Opciones</th>
+        {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+      <tr>
+        <td><a href="../cuentas/verTransaccion?numero={{ user.numero }}">{{ user.numero }}</a></td>
+          <td>{{ user.cliente }}</td>
+        <td>{{ user.saldo }}</td>
+        <td>{{ user.fecha_apertura }}</td>
+          {%if permisoEditar%}
+        <td><a href="../cuentas/modificar?numero={{user.numero}}"><i class="fas fa-edit">   </i>Modificar</a> <br> <a href="../cuentas/showDialog?numero={{user.numero}}"><i class="fas fa-trash-alt"></i>Eliminar</a></td>
+        {%endif%}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+    {% if users.has_other_pages %}
+  <ul class="pagination">
+    {% if users.has_previous %}
+      <li  class="btn btn-dark"><a   href="?page={{ users.previous_page_number }}&cedula={{cedula}}">&laquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
+        <li class="btn btn-dark"  class="active"><span >{{ i }}<span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="btn btn-dark" ><a href="?page={{ i }}&cedula={{cedula}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+      <li class="btn btn-dark"><a href="?page={{ users.next_page_number }}&cedula={{cedula}}">&raquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+</div>
+
+<div align="center" style="margin-right: 150px;margin-left: 110px;">
+     <table class="table table-striped   ">
+  <thead>
+    <tr>
+      <th>Numero</th>
+      <th>Cedula Cliente</th>
+      <th>Saldo</th>
+        <th>Fecha de Apertura</th>
+        {%if permisoEditar%}
+        <th>Opciones</th>
+        {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in listaInactivos %}
+      <tr>
+        <td><a href="../cuentas/verTransaccion?numero={{ user.numero }}">{{ user.numero }}</a></td>
+          <td>{{ user.cliente }}</td>
+        <td>{{ user.saldo }}</td>
+        <td>{{ user.fecha_apertura }}</td>
+          {%if permisoEditar%}
+        <td><a href="../cuentas/modificar?numero={{user.numero}}"><i class="fas fa-edit">   </i>Modificar</a> <br> <a href="../cuentas/ActivarCuenta?numero={{user.numero}}"><i class="fas fa-check-square"></i>Activar</a></td>
+        {%endif%}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+    {% if listaInactivos.has_other_pages %}
+  <ul class="pagination">
+    {% if listaInactivos.has_previous %}
+      <li  class="btn btn-dark"><a   href="?page={{ listaInactivos.previous_page_number }}&cedula={{cedula}}">&laquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in listaInactivos.paginator.page_range %}
+      {% if listaInactivos.number == i %}
+        <li class="btn btn-dark"  class="active"><span >{{ i }}<span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="btn btn-dark" ><a href="?page={{ i }}&cedula={{cedula}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if listaInactivos.has_next %}
+      <li class="btn btn-dark"><a href="?page={{ listaInactivos.next_page_number }}&cedula={{cedula}}">&raquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+</div>
+<br><br>
+<p style="font-size: 20px" id="pag"></p>
+</body>
+</html>
+{%endblock%}

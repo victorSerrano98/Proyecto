@@ -1,0 +1,46 @@
+{%extends "master.html"%}
+{% block contenido%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+     document.body.innerHTML = printContents;
+     window.print();
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+<body>
+<div  style="margin-right: 150px;margin-left: 110px; border-color: #000000">
+    <div id="printableArea" style="margin: 25px">
+                <br>
+                <div >
+                    <label><b>Fecha:  </b></label>{{fecha}}
+                </div >
+                <div >
+                    <label><b>Numero de cuenta de Origen: </b></label>{{cuentaOrigen}}
+                </div>
+                <div >
+                    <label><b>Numero de cuenta de Destino: </b></label>{{cuentaDestino}}
+                </div>
+                <div >
+                    <label><b>Cantidad: </b>$ </label>{{valor}}
+                </div>
+                <div >
+                    <label><b>Descripcion: </b></label>{{descripcion}}
+                </div>
+            </div>
+            <div align="center">
+                <input type="button" class="waves-effect waves-light btn blue" onclick="printDiv('printableArea')" value="Imprimir" style="background-color: #4e555b; width: 500px; height: 50px; font-size: 25px; color: #ffffff" />
+                <a href="../" class="btn btn-success"  style="background-color: #c82333; width: 500px; height: 50px; font-size: 25px"> Cancelar</a>
+            </div>
+</div>
+
+</body>
+</html>
+{%endblock%}}

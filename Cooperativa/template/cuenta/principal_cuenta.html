@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{%extends "master.html"%}
+{% block contenido%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"
+
+</head>
+<style>
+    tr{
+        border: 1px solid;
+        text-align: center;
+        background-color:ghostwhite;
+    }
+    h1{
+        text-align: center;
+        
+    }
+</style>
+<script>
+    document.getElementById("id_cuenta")
+</script>
+<body>
+<div style="font-size: 50px" align="center">
+    {{title}}
+</div>
+<div align="center">
+        <table >
+            <th ><input onchange="recibir()" id="txt_buscar" type="text" style="width: 200px" placeholder="Buscar" value=""></th>
+            <th ><a id="boton_buscar" style="background-color: #4e555b; width: 50px; height: 50px; font-size: 25px" class="btn btn-success"><i style="font-size: 20px" class="fab fa-sistrix"></i></a></th>
+        </table>
+        <script>
+            function recibir()
+    {
+        var valor = document.getElementById("txt_buscar").value;
+        document.getElementById("boton_buscar").href = 'buscar?txt_buscar='+valor+'';
+
+    }
+
+        </script>
+
+</div>
+<br>
+<div align="center" style="margin-right: 110px;margin-left: 110px;">
+    <table class="table table-striped   ">
+    <thead>
+    <th>Numero de Cuenta</th>
+    <th>Cedula de Cliente</th>
+    <th>Saldo</th>
+    <th>Tipo de Cuenta</th>
+    {%if permisoEditar%}
+    <th>Opciones</th>
+    {%endif%}
+
+    </thead>
+
+    {% for c in users%}
+    <tr>
+
+        <td><a href="verTransaccion?numero={{c.numero}}">{{c.numero}}</a></td>
+        <td>{{c.cliente}}</td>
+        <td>{{c.saldo}}</td>
+        <td>{{c.tipo_Cuenta}}</td>
+        {%if permisoEditar%}
+        <td><a href="modificar?numero={{c.numero}}"><i class="fas fa-edit">   </i>Modificar</a> <br> <a href="showDialog?numero={{c.numero}}"><i class="fas fa-trash-alt"></i>Eliminar</a></td>
+        {%endif%}
+     </tr>
+    {%endfor%}
+
+</table>
+
+    {% if users.has_other_pages %}
+  <ul class="pagination">
+    {% if users.has_previous %}
+      <li  class="btn btn-dark"><a   href="?page={{ users.previous_page_number }}&cedula={{cedula}}">&laquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
+        <li class="btn btn-dark"  class="active"><span >{{ i }}<span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="btn btn-dark" ><a href="?page={{ i }}&cedula={{cedula}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+      <li class="btn btn-dark"><a href="?page={{ users.next_page_number }}&cedula={{cedula}}">&raquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+<div align="center" style="font-size: 30px">
+    <b>Cuentas Inactivas</b>
+</div>
+<div align="center" style="margin-right: 110px;margin-left: 110px;">
+    <table class="table table-striped   ">
+    <thead>
+    <th>Numero de Cuenta</th>
+    <th>Cedula de Cliente</th>
+    <th>Saldo</th>
+    <th>Tipo de Cuenta</th>
+    {%if permisoEditar%}
+    <th>Opciones</th>
+    {%endif%}
+
+    </thead>
+
+    {% for c in listaInactivas%}
+    <tr>
+
+        <td><a href="verTransaccion?numero={{c.numero}}">{{c.numero}}</a></td>
+        <td>{{c.cliente}}</td>
+        <td>{{c.saldo}}</td>
+        <td>{{c.tipo_Cuenta}}</td>
+        {%if permisoEditar%}
+        <td><a href="modificar?numero={{c.numero}}"><i class="fas fa-edit">   </i>Modificar</a> <br> <a href="ActivarCuenta?numero={{c.numero}}"><i class="fas fa-check-square"></i>Activar</a></td>
+        {%endif%}
+     </tr>
+    {%endfor%}
+
+</table>
+
+    {% if listaInactivas.has_other_pages %}
+  <ul class="pagination">
+    {% if listaInactivas.has_previous %}
+      <li  class="btn btn-dark"><a   href="?page={{ listaInactivas.previous_page_number }}&cedula={{cedula}}">&laquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in listaInactivas.paginator.page_range %}
+      {% if listaInactivas.number == i %}
+        <li class="btn btn-dark"  class="active"><span >{{ i }}<span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="btn btn-dark" ><a href="?page={{ i }}&cedula={{cedula}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if listaInactivas.has_next %}
+      <li class="btn btn-dark"><a href="?page={{ listaInactivas.next_page_number }}&cedula={{cedula}}">&raquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+</body>
+</html>
+{%endblock%}

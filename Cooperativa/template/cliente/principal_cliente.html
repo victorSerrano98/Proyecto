@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+{%extends "master.html"%}
+{% block contenido%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script>
+
+</script>
+
+</head>
+<style>
+    tr{
+        border: 1px solid;
+        text-align: center;
+        background-color:ghostwhite;
+    }
+    h1{
+        text-align: center;
+    }
+</style>
+<body>
+<div style="font-size: 50px" align="center">
+    {{title}}
+    {%if permisoCrear%}
+    <a id="hola" i style="background-color: #4e555b; width: 215px; height: 50px; font-size: 25px" class="btn btn-success" href="crear" ><i class="far fa-user"></i>  Nuevo Cliente</a>
+    {%endif%}
+</div>
+<div align="center">
+        <table >
+            <th ><input onchange="recibir()" id="txt_buscar" type="text" style="width: 200px" placeholder="Buscar" value=""></th>
+            <th ><a id="boton_buscar" style="background-color: #4e555b; width: 50px; height: 50px; font-size: 25px" class="btn btn-success"><i style="font-size: 20px" class="fab fa-sistrix"></i></a></th>
+        </table>
+        <script>
+            function recibir()
+    {
+        var valor = document.getElementById("txt_buscar").value;
+        document.getElementById("boton_buscar").href = 'buscar?txt_buscar='+valor+'';
+    }
+        </script>
+
+</div>
+<br>
+<div align="center" style="margin-right: 110px;margin-left: 110px;">
+
+    <table class="table table-striped   ">
+
+        <thead>
+    <th>Cedula</th>
+    <th>Nombres</th>
+    <th>Apellidos</th>
+    <th>Correo</th>
+    <th>Telefono</th>
+    <th>Celular</th>
+    <th>Direccion</th>
+    {%if permisoEditar%}
+        <th>Opciones</th>
+        {%endif%}
+    </thead>
+
+    {% for c in users%}
+    <tr>
+
+        <td><a href="presentarCuentas?cedula={{c.cedula}}">{{c.cedula}}</a></td>
+        <td>{{c.nombres}}</td>
+        <td>{{c.apellidos}}</td>
+        <td>{{c.correo}}</td>
+        <td>{{c.telefono}}</td>
+        <td>{{c.celular}}</td>
+        <td>{{c.direccion}}</td>
+        {%if permisoEditar%}
+        <td><a href="modificar?cedula={{c.cedula}}"><i class="fas fa-edit">   </i>Modificar</a>   <br> <a href="showDialog?cedula={{c.cedula}}"><i class="fas fa-trash-alt"></i>Eliminar</a></td>
+        {%endif%}
+     </tr>
+    {%endfor%}
+
+</table>
+
+    {% if users.has_other_pages %}
+  <ul class="pagination">
+    {% if users.has_previous %}
+      <li  class="btn btn-dark"><a   href="?page={{ users.previous_page_number }}&cedula={{cedula}}">&laquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
+        <li class="btn btn-dark"  class="active"><span >{{ i }}<span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="btn btn-dark" ><a href="?page={{ i }}&cedula={{cedula}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+      <li class="btn btn-dark"><a href="?page={{ users.next_page_number }}&cedula={{cedula}}">&raquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+<br>
+<div style="font-size: 30px" align="center">
+    <b>Clientes Inactivas:</b>
+</div>
+<div align="center" style="margin-right: 110px;margin-left: 110px;">
+
+    <table class="table table-striped   ">
+
+        <thead>
+    <th>Cedula</th>
+    <th>Nombres</th>
+    <th>Apellidos</th>
+    <th>Correo</th>
+    <th>Telefono</th>
+    <th>Celular</th>
+    <th>Direccion</th>
+    {%if permisoEditar%}
+        <th>Opciones</th>
+        {%endif%}
+    </thead>
+
+    {% for c in listaInactivos%}
+    <tr>
+
+        <td><a href="presentarCuentas?cedula={{c.cedula}}">{{c.cedula}}</a></td>
+        <td>{{c.nombres}}</td>
+        <td>{{c.apellidos}}</td>
+        <td>{{c.correo}}</td>
+        <td>{{c.telefono}}</td>
+        <td>{{c.celular}}</td>
+        <td>{{c.direccion}}</td>
+        {%if permisoEditar%}
+        <td><a href="modificar?cedula={{c.cedula}}"> <i class="fas fa-edit"></i>Modificar</a> <br> <a href="ActivarCliente?cedula={{c.cedula}}"><i class="fas fa-check-square"></i>Activar</a></td>
+        {%endif%}
+     </tr>
+    {%endfor%}
+
+</table>
+     {% if listaInactivos.has_other_pages %}
+  <ul class="pagination">
+    {% if listaInactivos.has_previous %}
+      <li  class="btn btn-dark"><a   href="?page={{ listaInactivos.previous_page_number }}&cedula={{cedula}}">&laquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in listaInactivos.paginator.page_range %}
+      {% if listaInactivos.number == i %}
+        <li class="btn btn-dark"  class="active"><span >{{ i }}<span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="btn btn-dark" ><a href="?page={{ i }}&cedula={{cedula}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if listaInactivos.has_next %}
+      <li class="btn btn-dark"><a href="?page={{ listaInactivos.next_page_number }}&cedula={{cedula}}">&raquo;</a></li>
+    {% else %}
+      <li class="btn btn-dark" class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+</body>
+</html>
+{%endblock%}
